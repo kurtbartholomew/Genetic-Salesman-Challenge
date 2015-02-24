@@ -10,21 +10,15 @@
  */
 var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, availableResources){
   var options = {
-    numberOfBloodlines: 10,
-    offspringPerSurvivor: 50,
+    numberOfBloodlines: 50,
+    offspringPerSurvivor: 5,
   };
 
-  var optimalRoute;
-  var initialRoutes = []; 
+  var currentGen = [];
 
-  for (var i = 0; i < numberOfBloodlines; i++) {
-    var newRoute = createRoute(cities);
-    newRoute.distance = calculateDistance(newRoute);
-    initialRoutes.push(newRoute);
+  for (var i = 0; i < options.numberOfBloodlines; i++) {
+    currentGen.push(createRoute(genes));
   }
-  // for (var y = 0; )
-
-  var currentGen = initialRoutes.slice();
 
   // genes - cities
   // assessFitness - calculate distance
@@ -38,8 +32,11 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
   // continue that for number of bloodlines
   // choose best of last generation
 
+  var sortedGen;
+  var newGen;
+
   for (var j = 0; j < availableResources; j++) {
-    
+
     currentGen.forEach(function(route) {
       route.distance = calculateDistance(route);
     });
@@ -48,17 +45,25 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
       return a.distance - b.distance;
     });
 
-    var sortedGen = currentGen.slice();
+    console.log("Generation" + j);
+    console.log(currentGen[0].distance);
 
-    currentGen.forEach(function(route) {
-      route = alterRoute(sortedGen[0]);
-    });
+    sortedGen = currentGen.slice();
+
+    if (j !== availableResources - 1) {
+      newGen = currentGen.map(function(route, index) {
+        if(index === 0){
+          return sortedGen[0];
+        }
+        return alterRoute(sortedGen[0]);
+      });
+      currentGen = newGen;
+    }  
   }
-  
+
   currentGen.sort(function(a, b) {
     return a.distance - b.distance;
   });
-
 
   return currentGen[0];
 }
@@ -80,9 +85,13 @@ var createRoute = function(cities){
 var alterRoute = function(route){
 
   var routeCopy = route.slice();
-
-  var randomIndex = Math.floor(Math.random() * routeCopy.length);
-  var randomIndex2 = Math.floor(Math.random() * routeCopy.length);
+  var randomIndex = 0;
+  var randomIndex2 = 0;
+  
+  while(randomIndex === randomIndex2) {
+    randomIndex = Math.floor(Math.random() * routeCopy.length);
+    randomIndex2 = Math.floor(Math.random() * routeCopy.length);
+  }
 
   var temp = routeCopy[randomIndex];
   routeCopy[randomIndex] = routeCopy[randomIndex2];
@@ -102,4 +111,3 @@ var calculateDistance = function(route){
     return distance1 + distance2;
   });
 }
-
