@@ -51,9 +51,6 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
       return a.distance - b.distance;
     });
 
-    console.log("Generation" + j);
-    console.log(currentGen[0].distance);
-
     // Spawn a new generation based off of the best route of the 
     // current generation by making mutated/altered copies of
     // the best route. Make sure that the best route is also
