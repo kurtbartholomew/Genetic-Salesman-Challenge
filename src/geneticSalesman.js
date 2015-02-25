@@ -1,10 +1,11 @@
 /* Objective: A salesman must travel to 50 different state capitals.
    Given a random route through the US,the salesman must travel to
-   each capital from index 0 to the last index on his route. Use a
-   genetic method: (find the best specimen, spawn new ones based on that
+   each capital from index 0 to the last index on his route and then
+   from the last index to the first (round trip). Use a genetic method:
+   (find the best specimen, spawn new ones based on that
    speciment with a single random change to each, and repeat the
    process for many generations, selecting the best one each time)
-   Use the method to find the optimal route over many generations.
+   Use the method to find the optimal route over many generations. */
 
 /**
  * Main method/ Takes an initial group of genes(cities), creates a condition on which to judge them
@@ -20,61 +21,79 @@
  */
 var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, availableResources){
   var options = {
-    numberOfBloodlines: 10,   // Not used in this implementation
+    numberOfBloodlines: 10,   // Used in the final part of implementing this function
     offspringPerSurvivor: 50, // # of new routes spawned each gen off the previous best route
   };
 
   var currentGen = [];        // initialize first generation
+  var bestOverallRoute = [];
+  bestOverallRoute.distance = +Infinity;
 
-  /* Populate current generation creating as many new routes
-     via createRoutes as specified by offspringPerSurvivor
-     into currentGen */
-  for (var i = 0; i < options.offspringPerSurvivor; i++) {
-    currentGen.push(createRoute(genes));
-  }
+  // Repeat the process of finding the best in
+  // 100 generations multiple times
+  for(var r = 0; r < options.numberOfBloodlines; r++) {
 
-  var newGen; // holder variable to hold newly mutated routes
+    /* Populate current generation creating as many new routes
+       via createRoutes as specified by offspringPerSurvivor
+       into currentGen */
+    for (var i = 0; i < options.offspringPerSurvivor; i++) {
+      currentGen.push(createRoute(genes));
+    }
 
-  // Iterated through as many generations as availableResources
-  for (var j = 0; j < availableResources; j++) {
+    var newGen; // holder variable to hold newly mutated routes
 
-    // Calculate the total distance covered of every route
-    // and store it along with that route
-    currentGen.forEach(function(route) {
-      route.distance = calculateDistance(route);
-    });
+    // Iterated through as many generations as availableResources
+    for (var j = 0; j < availableResources; j++) {
 
-    // Either sort the current generation by distance
-    // or find the route with the lowest distance covered
-    // and store it.
+      // Calculate the total distance covered of every route
+      // and store it along with that route
+      currentGen.forEach(function(route) {
+        route.distance = calculateDistance(route);
+      });
+
+      // Either sort the current generation by distance
+      // or find the route with the lowest distance covered
+      // and store it.
+      currentGen.sort(function(a, b) {
+        return a.distance - b.distance;
+      });
+
+      // Spawn a new generation based off of the best route of the 
+      // current generation by making mutated/altered copies of
+      // the best route. Make sure that the best route is also
+      // stored in the new generation!
+      if (j !== availableResources - 1) {
+        // as long as this isn't the last generation
+        newGen = currentGen.map(function(route, index) {
+          if(index === 0){
+            // store the current generation's best at index 0
+            return currentGen[0]; 
+          }
+          // store a mutated copy of the current generations best
+          // in every other index
+          return alterRoute(currentGen[0]);
+        });
+
+        // make the newly mutated generation the current generation and repeat!
+        currentGen = newGen; 
+      }
+
+      // Repeat the process for each generation! Make your current
+      // generation equal to the newly spawned generation and start over!  
+    }
+
     currentGen.sort(function(a, b) {
       return a.distance - b.distance;
     });
 
-    // Spawn a new generation based off of the best route of the 
-    // current generation by making mutated/altered copies of
-    // the best route. Make sure that the best route is also
-    // stored in the new generation!
-    if (j !== availableResources - 1) {
-      newGen = currentGen.map(function(route, index) {
-        if(index === 0){
-          return currentGen[0];
-        }
-        return alterRoute(currentGen[0]);
-      });
-      currentGen = newGen;
-    }
 
-    // Repeat the process for each generation! Make your current
-    // generation equal to the newly spawned generation and start over!  
+    //compare the distance of the best route in the current generation
+    //with the current best overall route. Assign accordingly
+    bestOverallRoute = (currentGen[0].distance < bestOverallRoute.distance) ? currentGen[0] : bestOverallRoute;
   }
-
-  currentGen.sort(function(a, b) {
-    return a.distance - b.distance;
-  });
-
-  // Return the best route after all of your generations!
-  return currentGen[0];
+    console.log(bestOverallRoute.distance);
+    // Return the best route after all of your bloodlines!
+    return bestOverallRoute;
 }
 
 /**

@@ -22,7 +22,7 @@ var testCitiesLong = [
 describe("calculateDistance", function(){
   it('should accurately calculate the distance between two cities', function(){
     var cities = testCitiesShort.slice(0,2);
-    console.log(calculateDistance);
+    //console.log(calculateDistance);
     var distance = calculateDistance(cities);
     expect(Math.floor(distance)).to.equal(2852653);
   });
