@@ -101,20 +101,18 @@ var createRoute = function(cities){
  */
 var alterRoute = function(route){
 
-  var routeCopy = route.slice();
-  var randomIndex = 0;
-  var randomIndex2 = 0;
+  // Make a copy of the route
   
-  while(randomIndex === randomIndex2) {
-    randomIndex = Math.floor(Math.random() * routeCopy.length);
-    randomIndex2 = Math.floor(Math.random() * routeCopy.length);
-  }
+  
+  // Create two random indices using the length of the route array
 
-  var temp = routeCopy[randomIndex];
-  routeCopy[randomIndex] = routeCopy[randomIndex2];
-  routeCopy[randomIndex2] = temp;
 
-  return routeCopy;
+  // Swap the objects at those two positions in the route
+
+
+  // Return the newly mutated route copy
+  
+  
 }
 /**
  * Calculates the distance between a city and the next one
