@@ -21,7 +21,7 @@
  */
 var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, availableResources){
   var options = {
-    numberOfBloodlines: 10,   // Used in the final part of implementing this function
+    numberOfBloodlines: 10,   // Used to repeat the process of 100 generation mutation multiple times
     offspringPerSurvivor: 50, // # of new routes spawned each gen off the previous best route
   };
 
@@ -37,7 +37,7 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
        via createRoutes as specified by offspringPerSurvivor
        into currentGen */
     for (var i = 0; i < options.offspringPerSurvivor; i++) {
-      currentGen.push(createRoute(genes));
+      currentGen.push(initiateBloodline(genes));
     }
 
     var newGen; // holder variable to hold newly mutated routes
@@ -48,7 +48,7 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
       // Calculate the total distance covered of every route
       // and store it along with that route
       currentGen.forEach(function(route) {
-        route.distance = calculateDistance(route);
+        route.distance = assessFitness(route);
       });
 
       // Either sort the current generation by distance
@@ -71,7 +71,7 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
           }
           // store a mutated copy of the current generations best
           // in every other index
-          return alterRoute(currentGen[0]);
+          return mutate(currentGen[0]);
         });
 
         // make the newly mutated generation the current generation and repeat!
@@ -86,14 +86,13 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
       return a.distance - b.distance;
     });
 
-
     //compare the distance of the best route in the current generation
     //with the current best overall route. Assign accordingly
     bestOverallRoute = (currentGen[0].distance < bestOverallRoute.distance) ? currentGen[0] : bestOverallRoute;
   }
-    console.log(bestOverallRoute.distance);
-    // Return the best route after all of your bloodlines!
-    return bestOverallRoute;
+
+  // Return the best route after all of your bloodlines!
+  return bestOverallRoute;
 }
 
 /**
