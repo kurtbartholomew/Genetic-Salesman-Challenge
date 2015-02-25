@@ -25,6 +25,9 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
     offspringPerSurvivor: 50, // # of new routes spawned each gen off the previous best route
   };
 
+  // Implementation by Kurt Bartholomew (bloodlines-removed)
+  // https://github.com/kurtbartholomew/GeneticAlgorithms/blob/master/src/geneticSalesman.js
+
   var currentGen = [];        // initialize first generation
 
   /* Populate current generation creating as many new routes
@@ -83,6 +86,29 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
    
   // Return the best route after 100 generations
   return currentGen[0];
+
+
+  // Implementation by Cassandra Cruz (bloodlines-removed)
+  // https://github.com/alicekamada/GeneticAlgorithms/blob/master/src/geneticSalesman.js
+  // Uncomment below here to use implementation
+
+  // var optimalRoute;
+
+  
+  // var bloodline = initiateBloodline(genes);
+  // var survivor;
+
+  // for (var j = 0; j < availableResources; j++) {
+  //   for (var k = 0; k < options.offspringPerSurvivor; k++) {
+  //     var child = mutate(bloodline);
+  //     if (survivor === undefined || (assessFitness(child) < assessFitness(survivor))) {
+  //       survivor = child;
+  //     }
+  //   }
+  //   bloodline = survivor;
+  // }
+
+  // return bloodline;
 }
 
 /**
