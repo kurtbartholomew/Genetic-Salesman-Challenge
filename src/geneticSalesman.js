@@ -22,78 +22,60 @@
 var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, availableResources){
   var options = {
     numberOfBloodlines: 10,   // Used to repeat the process of 100 generation mutation multiple times
+                              // This will be utilized by the final step explained below
     offspringPerSurvivor: 50, // # of new routes spawned each gen off the previous best route
   };
 
-  var currentGen = [];        // initialize first generation
-  var bestOverallRoute = [];
-  bestOverallRoute.distance = +Infinity;
+  
 
-  // Repeat the process of finding the best in
-  // 100 generations multiple times
-  for(var r = 0; r < options.numberOfBloodlines; r++) {
+  /* Populate current generation creating as many new routes
+     via createRoutes as specified by offspringPerSurvivor
+     into currentGen */
 
-    /* Populate current generation creating as many new routes
-       via createRoutes as specified by offspringPerSurvivor
-       into currentGen */
-    for (var i = 0; i < options.offspringPerSurvivor; i++) {
-      currentGen.push(initiateBloodline(genes));
-    }
 
-    var newGen; // holder variable to hold newly mutated routes
 
-    // Iterated through as many generations as availableResources
-    for (var j = 0; j < availableResources; j++) {
+  // Iterated through as many generations as availableResources
+  
 
-      // Calculate the total distance covered of every route
-      // and store it along with that route
-      currentGen.forEach(function(route) {
-        route.distance = assessFitness(route);
-      });
 
-      // Either sort the current generation by distance
-      // or find the route with the lowest distance covered
-      // and store it.
-      currentGen.sort(function(a, b) {
-        return a.distance - b.distance;
-      });
+      /* Calculate the total distance covered of every route
+      and store it along with that route */
 
-      // Spawn a new generation based off of the best route of the 
-      // current generation by making mutated/altered copies of
-      // the best route. Make sure that the best route is also
-      // stored in the new generation!
-      if (j !== availableResources - 1) {
-        // as long as this isn't the last generation
-        newGen = currentGen.map(function(route, index) {
-          if(index === 0){
-            // store the current generation's best at index 0
-            return currentGen[0]; 
-          }
-          // store a mutated copy of the current generations best
-          // in every other index
-          return mutate(currentGen[0]);
-        });
 
-        // make the newly mutated generation the current generation and repeat!
-        currentGen = newGen; 
-      }
 
-      // Repeat the process for each generation! Make your current
-      // generation equal to the newly spawned generation and start over!  
-    }
+      /* Either sort the current generation by distance
+      or find the route with the lowest distance covered
+      and store it. */
 
-    currentGen.sort(function(a, b) {
-      return a.distance - b.distance;
-    });
 
-    //compare the distance of the best route in the current generation
-    //with the current best overall route. Assign accordingly
-    bestOverallRoute = (currentGen[0].distance < bestOverallRoute.distance) ? currentGen[0] : bestOverallRoute;
-  }
 
-  // Return the best route after all of your bloodlines!
-  return bestOverallRoute;
+      /* Spawn a new generation based off of the best route of the 
+      current generation by making mutated/altered copies of
+      the best route. Make sure that the best route is also
+      stored in the new generation! */
+
+
+
+      /* Repeat the process for each generation! Make your current
+      generation equal to the newly spawned generation and start over! */  
+  
+  return bestRoute;
+
+
 }
+
+// =====================================================================
+// FINAL STEP ONCE YOU HAVE THE GENETIC SALESMAN FUNCTION WORKING:
+// 
+// Repeat the process of finding the best in 100 generations
+// for as many times as is set by options.numberOfBloodlines
+
+// Compare the distance of the best route in the current generation
+// with the current best overall route. Assign accordingly.
+
+// Return the best route after all of your bloodlines!
+//======================================================================
+
 
 /**
  * Uses the existing cities array to create a random itinerary
