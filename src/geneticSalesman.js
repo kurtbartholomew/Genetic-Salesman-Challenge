@@ -89,13 +89,13 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
     });
 
 
-  //   //compare the distance of the best route in the current generation
-  //   //with the current best overall route. Assign accordingly
-  //   bestOverallRoute = (currentGen[0].distance < bestOverallRoute.distance) ? currentGen[0] : bestOverallRoute;
-  // }
+    //compare the distance of the best route in the current generation
+    //with the current best overall route. Assign accordingly
+    bestOverallRoute = (currentGen[0].distance < bestOverallRoute.distance) ? currentGen[0] : bestOverallRoute;
+  }
 
-  // // Return the best route after all of your bloodlines!
-  // return bestOverallRoute;
+  // Return the best route after all of your bloodlines!
+  return bestOverallRoute;
 
 
   // Implementation by Cassandra Cruz - With bloodlines
