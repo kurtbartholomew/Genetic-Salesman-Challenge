@@ -1,3 +1,5 @@
+As a quick note first off, I do not claim to have written this algorithmic problem. I added to the assignment's original form to be more intuitive and rehosted it for other interested individuals. The original creator of this problem was [Drew Cuthbertson](https://github.com/Syeoryn). The preface, explanation, and performance of several implementations can be found at http://blog.kurtbartholomew.com/2015/02/25/traveling-with-mutants-a-case-study-of-js-algorithm-performance/
+
 #Genetic algorithms
 
 Genetic algorithms take an initial population, select survivors, mutate them, and repeat the process until a goal state is reached or resources are exhausted.
